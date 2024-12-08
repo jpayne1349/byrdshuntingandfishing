@@ -20,7 +20,7 @@
     <h3
       class="text-white font-bold text-5xl lg:text-7xl lg:mt-4 border-none text-center tracking-tight leading-12"
     >
-      YOUR CABIN
+      THE CABIN
     </h3>
   </section>
 </div>

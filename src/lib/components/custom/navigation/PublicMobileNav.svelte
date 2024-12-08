@@ -19,7 +19,7 @@
     <Button
       builders={[builder]}
       variant="ghost"
-      class="mr-0 mt-16 px-0 text-base hover:bg-transparent focus-visible:bg-transparent focus-visible:ring-0 focus-visible:ring-offset-0 md:hidden"
+      class="mr-0 mt-0 px-0 text-base hover:bg-transparent focus-visible:bg-transparent focus-visible:ring-0 focus-visible:ring-offset-0 md:hidden"
     >
       <Menu class="h-8 w-8 stroke-white" />
       <span class="sr-only">Toggle Menu</span>
@@ -31,7 +31,7 @@
         >
       </MobileSheetLink>
 
-      <div class="my-4 h-[100vh] overflow-auto pb-10 pl-0">
+      <div class="my-4 h-dvh overflow-auto pb-10 pl-0">
         <div class="flex flex-col space-y-4">
           <MobileSheetLink
             href="/"

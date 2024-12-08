@@ -9,15 +9,17 @@
   import PublicHeader from "$lib/components/custom/layout/PublicHeader.svelte";
   import PageSpinner from "$lib/components/custom/spinners/PageSpinner.svelte";
   import PublicFooter from "$lib/components/custom/layout/PublicFooter.svelte";
+
+  import bgPhoto from "$lib/photos/deer_homepage_bg.jpg";
 </script>
 
 <ModeWatcher defaultMode={"light"} />
 
-<main class="base-layout relative flex h-[100vh] flex-col items-center">
+<main class="base-layout relative flex h-dvh flex-col items-center">
   <PublicHeader />
-  <div class="flex relative flex-col overflow-x-hidden h-[100vh] w-full">
-    <slot />
-  </div>
+
+  <slot />
+
   <PublicFooter />
 </main>
 <AlertContainer>
