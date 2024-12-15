@@ -15,7 +15,7 @@
 
 <ModeWatcher defaultMode={"light"} />
 
-<main class="base-layout relative flex h-dvh flex-col items-center">
+<main class="relative flex flex-col">
   <PublicHeader />
 
   <slot />

@@ -11,6 +11,8 @@
   import contactPhoto from "$lib/photos/mobile_nav_contact.jpg";
   import bookPhoto from "$lib/photos/mobile_nav_book.jpg";
 
+  export let color: string;
+
   let open = false;
 </script>
 
@@ -21,7 +23,11 @@
       variant="ghost"
       class="mr-0 mt-0 px-0 text-base hover:bg-transparent focus-visible:bg-transparent focus-visible:ring-0 focus-visible:ring-offset-0 md:hidden"
     >
-      <Menu class="h-8 w-8 stroke-white" />
+      {#if color == "light"}
+        <Menu class="h-8 w-8 stroke-white" />
+      {:else}
+        <Menu class="h-8 w-8 stroke-black" />
+      {/if}
       <span class="sr-only">Toggle Menu</span>
     </Button>
     <Sheet.Content side="right" class="p-0">

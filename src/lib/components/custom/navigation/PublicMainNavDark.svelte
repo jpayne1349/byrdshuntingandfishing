@@ -1,8 +1,6 @@
 <script lang="ts">
   import { page } from "$app/stores";
-  //import { siteConfig } from '$lib/config';
   import { cn } from "$lib/utils";
-  import { Spline } from "lucide-svelte";
 </script>
 
 <div class="mr-4 hidden md:flex">
@@ -16,8 +14,8 @@
     <a
       href="/"
       class={cn(
-        "transition-colors hover:text-white/80 no-underline underline-offset-0",
-        $page.url.pathname === "/" ? "text-white/50" : "text-white"
+        "transition-colors hover:text-black/80 no-underline underline-offset-0",
+        $page.url.pathname === "/" ? "text-black/50" : "text-black"
       )}
     >
       Home
@@ -25,8 +23,8 @@
     <a
       href="/hunting"
       class={cn(
-        "transition-colors hover:text-white/80 no-underline underline-offset-0",
-        $page.url.pathname.includes("/hunting") ? "text-white/50" : "text-white"
+        "transition-colors hover:text-black/80 no-underline underline-offset-0",
+        $page.url.pathname.includes("/hunting") ? "text-black/50" : "text-black"
       )}
     >
       Hunting
@@ -34,8 +32,8 @@
     <a
       href="/fishing"
       class={cn(
-        "transition-colors hover:text-white/80 no-underline underline-offset-0",
-        $page.url.pathname.includes("/fishing") ? "text-white/50" : "text-white"
+        "transition-colors hover:text-black/80 no-underline underline-offset-0",
+        $page.url.pathname.includes("/fishing") ? "text-black/50" : "text-black"
       )}
     >
       Fishing
@@ -43,10 +41,10 @@
     <a
       href="/the_cabin"
       class={cn(
-        "transition-colors hover:text-white/80 no-underline underline-offset-0",
+        "transition-colors hover:text-black/80 no-underline underline-offset-0",
         $page.url.pathname.includes("/the_cabin")
-          ? "text-white/50"
-          : "text-white"
+          ? "text-black/50"
+          : "text-black"
       )}
     >
       The Cabin
@@ -54,10 +52,10 @@
     <a
       href="/about_us"
       class={cn(
-        "transition-colors hover:text-white/80 no-underline underline-offset-0",
+        "transition-colors hover:text-black/80 no-underline underline-offset-0",
         $page.url.pathname.includes("/about_us")
-          ? "text-white/50"
-          : "text-white"
+          ? "text-black/50"
+          : "text-black"
       )}
     >
       About Us
@@ -65,10 +63,10 @@
     <a
       href="/contact?question"
       class={cn(
-        "transition-colors hover:text-white/80 no-underline underline-offset-0",
+        "transition-colors hover:text-black/80 no-underline underline-offset-0",
         $page.url.pathname.includes("/contact?question")
-          ? "text-white/50"
-          : "text-white"
+          ? "text-black/50"
+          : "text-black"
       )}
     >
       Contact
@@ -76,10 +74,10 @@
     <a
       href="/contact?book-a-trip"
       class={cn(
-        "transition-colors hover:text-white/80 no-underline underline-offset-0",
+        "transition-colors hover:text-black/80 no-underline underline-offset-0",
         $page.url.pathname.includes("/contact?book-a-trip")
-          ? "text-white/50"
-          : "text-white"
+          ? "text-black/50"
+          : "text-black"
       )}
     >
       Book a Trip
