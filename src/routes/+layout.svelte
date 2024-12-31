@@ -1,16 +1,16 @@
 <script lang="ts">
   import "../app.pcss";
-
   import AlertContainer from "$lib/components/custom/alerts/AlertContainer.svelte";
   import MyAlert from "$lib/components/custom/alerts/MyAlert.svelte";
   import { alertStore } from "$lib/stores/alert";
   import { ModeWatcher } from "mode-watcher";
-  import DarkModeToggle from "$lib/components/custom/darkmode/tempDarkModeToggle.svelte";
   import PublicHeader from "$lib/components/custom/layout/PublicHeader.svelte";
-  import PageSpinner from "$lib/components/custom/spinners/PageSpinner.svelte";
   import PublicFooter from "$lib/components/custom/layout/PublicFooter.svelte";
+  import { onMount } from "svelte";
+  import { connectionHandler } from "$lib/helpers/firebase";
+ 
 
-  import bgPhoto from "$lib/photos/deer_homepage_bg.jpg";
+  onMount(connectionHandler);
 </script>
 
 <ModeWatcher defaultMode={"light"} />

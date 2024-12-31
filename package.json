@@ -38,7 +38,7 @@
     "cmdk-sv": "^0.0.12",
     "dayjs": "^1.11.10",
     "embla-carousel-autoplay": "^8.5.1",
-    "firebase": "^10.7.1",
+    "firebase": "^10.14.1",
     "firebase-admin": "^12.0.0",
     "formsnap": "^0.4.4",
     "marked": "^12.0.1",
