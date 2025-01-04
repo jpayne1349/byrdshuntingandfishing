@@ -56,11 +56,7 @@
       );
 
       if (userCredential.user) {
-        let user = await getUser(userCredential.user.uid);
-
         $loginStore.loggingIn = true;
-
-        userStore.set(user);
       }
     } catch (e) {
       formAttempts++;
@@ -78,28 +74,7 @@
       cancel();
     }
 
-    return async ({ result, update }) => {
-      if (result.type == "success") {
-        // recordUserLogin($userStore);
-
-        //@ts-ignore
-        let userRelation = generateUserRelation($userStore);
-
-        new MyEvent({
-          type: "user.login.success",
-          title: "User Login",
-          //@ts-ignore not sure why ts doesn't know that result contains a data property
-          description: result.data.event_description,
-          style: "info",
-          persist: true,
-          visibility: "none",
-          relations: [userRelation],
-        });
-      }
-
-      isLoading = false;
-      cancel();
-    };
+    return;
   }}
 >
   <h1 class="scroll-m-20 text-xl font-semibold tracking-tight">

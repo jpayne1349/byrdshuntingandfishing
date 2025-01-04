@@ -49,9 +49,9 @@ export async function getUserAuth(target: string | undefined) {
 		if (!ls.authListener) {
 			ls.authListener = onAuthStateChanged(fs.auth, async (user) => {
 				if (user) {
-					let userDoc = await getUser(user.uid);
+					// let userDoc = await getUser(user.uid);
 
-					userStore.set(userDoc);
+					// userStore.set(userDoc);
 
 					loginStore.update((storeData) => {
 						storeData.loggedIn = true;

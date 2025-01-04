@@ -59,7 +59,7 @@ export async function connect() {
 			// ** PUBLIC VARIABLES **
 
 			// Initialize Firebase
-			const app = appModule.initializeApp(firebaseClientConfig, 'rvfleet-dev');
+			const app = appModule.initializeApp(firebaseClientConfig, 'byrds-hunting-fishing');
 			const auth = authModule.getAuth(app);
 			const db = firestoreModule.getFirestore(app);
 			const storage = storageModule.getStorage(app);

@@ -148,7 +148,7 @@
   <div class="mx-0 lg:hidden">
     <ul class="[&>li]:ml-6 mt-10 mx-0">
       <h2>What to Expect</h2>
-      <li><h4>Upfont Pricing</h4></li>
+      <li><h4>Upfront Pricing</h4></li>
       <li><h4>100% Success Rate</h4></li>
       <li><h4>Lodging for 3 Nights / 2.5 Days</h4></li>
     </ul>

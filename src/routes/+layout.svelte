@@ -8,12 +8,28 @@
   import PublicFooter from "$lib/components/custom/layout/PublicFooter.svelte";
   import { onMount } from "svelte";
   import { connectionHandler } from "$lib/helpers/firebase";
- 
+  import { fb } from "$lib/stores/firebase";
+  import { collection, getDocs, onSnapshot, query } from "firebase/firestore";
+  import { photoStore } from "$lib/stores/photos";
+  import type { PhotoType } from "$lib/types/Photo";
 
-  onMount(connectionHandler);
+  onMount(async () => {
+    await connectionHandler();
+    populatePhotoStore();
+  });
+
+  function populatePhotoStore() {
+    const q = query(collection($fb.db, "photos"));
+    const unsubscribe = onSnapshot(q, (querySnapshot) => {
+      $photoStore.all = [];
+      querySnapshot.forEach((doc) => {
+        console.log(doc.data());
+        $photoStore.all = [...$photoStore.all, doc.data() as PhotoType];
+      });
+      console.log("photoStore updated: ", $photoStore.all);
+    });
+  }
 </script>
-
-<ModeWatcher defaultMode={"light"} />
 
 <main class="relative flex flex-col">
   <PublicHeader />

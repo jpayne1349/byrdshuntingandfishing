@@ -5,7 +5,6 @@
   import PageSpinner from "$lib/components/custom/spinners/PageSpinner.svelte";
 
   let target = $page.url.pathname;
-
 </script>
 
 <svelte:head>

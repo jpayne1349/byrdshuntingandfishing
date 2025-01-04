@@ -4,9 +4,9 @@
   import { loginStore } from "$lib/stores/login";
   import PageSpinner from "$lib/components/custom/spinners/PageSpinner.svelte";
 
-  let target = $page.url.pathname;
+  
 
-  getUserAuth(target);
+
 </script>
 
 <svelte:head>
