@@ -57,8 +57,10 @@
       <Button
         href="/contact?book-a-trip"
         class="font-semibold text-white bg-transparent no-underline text-lg"
-        variant="outline">BOOK A TRIP</Button
+        variant="outline"
       >
+        BOOK A TRIP
+      </Button>
     </div>
     <div
       id="scroll-container"
@@ -90,8 +92,9 @@
       spoonbills to name a few.
     </p>
     <p>
-      <a href="/the_cabin">The Cabin</a> was built in 2020. This house was built
-      in the woods and a wonderful place to disconnect and enjoy some down time.
+      <a href="/the_cabin">The Cabin</a>
+      was built in 2020. This house was built in the woods and a wonderful place
+      to disconnect and enjoy some down time.
     </p>
   </div>
   <!-- <iframe

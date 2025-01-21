@@ -3,10 +3,6 @@
   import { getUserAuth } from "$lib/helpers/user";
   import { loginStore } from "$lib/stores/login";
   import PageSpinner from "$lib/components/custom/spinners/PageSpinner.svelte";
-
-  
-
-
 </script>
 
 <svelte:head>

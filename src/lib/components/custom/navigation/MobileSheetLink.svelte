@@ -17,7 +17,7 @@
   class={cn(
     "text-2xl font-semibold no-underline underline-offset-0 h-16 flex justify-start items-center p-2 bg-cover bg-center",
     $page.url.pathname === href ? "text-foreground" : "text-foreground/60",
-    className
+    className,
   )}
   {...$$restProps}
 >

@@ -17,7 +17,7 @@ export const fb = writable<{
   analytics?: Analytics;
 }>(undefined, (setFunc) => {
   // after initial population, do these things
-  
+
   // unsub callback message
   return (whoUnsubbed?: string) => {
     if (whoUnsubbed) {

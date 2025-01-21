@@ -1,6 +1,5 @@
 <script lang="ts">
-
-	export let caption = "LOADING...";
+  export let caption = "LOADING...";
 </script>
 
 <div class="spinner-container">
@@ -25,14 +24,14 @@
       stroke-dasharray="72.26 72.26"
     />
   </svg>
-  <p class='text-muted-foreground mt-6 font-thin text-sm'>{caption}</p>
+  <p class="text-muted-foreground mt-6 font-thin text-sm">{caption}</p>
 </div>
 
 <style>
   .spinner-container {
     width: 100vw;
     height: 90vh;
-	padding-bottom: 10vh;
+    padding-bottom: 10vh;
     position: relative;
     top: 0;
     left: 0;
@@ -41,7 +40,7 @@
     z-index: 100;
 
     display: flex;
-	flex-direction: column;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
   }

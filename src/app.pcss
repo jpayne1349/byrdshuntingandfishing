@@ -75,6 +75,12 @@
     @apply border-border;
     font-family: "Open Sans";
   }
+  /* Should prevent mobile browsers from zooming on focus */
+  input,
+  textarea,
+  select {
+    @apply text-base;
+  }
   body {
     @apply bg-background text-foreground;
   }

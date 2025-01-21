@@ -14,7 +14,7 @@
           href="/"
           class={cn(
             "transition-colors hover:text-white/80 no-underline underline-offset-0",
-            $page.url.pathname === "/" ? "text-white/50" : "text-white"
+            $page.url.pathname === "/" ? "text-white/50" : "text-white",
           )}
         >
           Home
@@ -25,7 +25,7 @@
             "transition-colors hover:text-white/80 no-underline underline-offset-0",
             $page.url.pathname.includes("/hunting")
               ? "text-white/50"
-              : "text-white"
+              : "text-white",
           )}
         >
           Hunting
@@ -36,7 +36,7 @@
             "transition-colors hover:text-white/80 no-underline underline-offset-0",
             $page.url.pathname.includes("/fishing")
               ? "text-white/50"
-              : "text-white"
+              : "text-white",
           )}
         >
           Fishing
@@ -47,7 +47,7 @@
             "transition-colors hover:text-white/80 no-underline underline-offset-0",
             $page.url.pathname.includes("/the_cabin")
               ? "text-white/50"
-              : "text-white"
+              : "text-white",
           )}
         >
           The Cabin
@@ -58,7 +58,7 @@
             "transition-colors hover:text-white/80 no-underline underline-offset-0",
             $page.url.pathname.includes("/about_us")
               ? "text-white/50"
-              : "text-white"
+              : "text-white",
           )}
         >
           About Us
@@ -69,7 +69,7 @@
             "transition-colors hover:text-white/80 no-underline underline-offset-0",
             $page.url.pathname.includes("/contact?question")
               ? "text-white/50"
-              : "text-white"
+              : "text-white",
           )}
         >
           Contact
@@ -80,7 +80,7 @@
             "transition-colors hover:text-white/80 no-underline underline-offset-0",
             $page.url.pathname.includes("/contact?book-a-trip")
               ? "text-white/50"
-              : "text-white"
+              : "text-white",
           )}
         >
           Book a Trip
@@ -98,7 +98,7 @@
           href="/"
           class={cn(
             "transition-colors hover:text-black/80 no-underline underline-offset-0",
-            $page.url.pathname === "/" ? "text-black/50" : "text-black"
+            $page.url.pathname === "/" ? "text-black/50" : "text-black",
           )}
         >
           Home
@@ -109,7 +109,7 @@
             "transition-colors hover:text-black/80 no-underline underline-offset-0",
             $page.url.pathname.includes("/hunting")
               ? "text-black/50"
-              : "text-black"
+              : "text-black",
           )}
         >
           Hunting
@@ -120,7 +120,7 @@
             "transition-colors hover:text-black/80 no-underline underline-offset-0",
             $page.url.pathname.includes("/fishing")
               ? "text-black/50"
-              : "text-black"
+              : "text-black",
           )}
         >
           Fishing
@@ -131,7 +131,7 @@
             "transition-colors hover:text-black/80 no-underline underline-offset-0",
             $page.url.pathname.includes("/the_cabin")
               ? "text-black/50"
-              : "text-black"
+              : "text-black",
           )}
         >
           The Cabin
@@ -142,7 +142,7 @@
             "transition-colors hover:text-black/80 no-underline underline-offset-0",
             $page.url.pathname.includes("/about_us")
               ? "text-black/50"
-              : "text-black"
+              : "text-black",
           )}
         >
           About Us
@@ -153,7 +153,7 @@
             "transition-colors hover:text-black/80 no-underline underline-offset-0",
             $page.url.pathname.includes("/contact?question")
               ? "text-black/50"
-              : "text-black"
+              : "text-black",
           )}
         >
           Contact
@@ -164,7 +164,7 @@
             "transition-colors hover:text-black/80 no-underline underline-offset-0",
             $page.url.pathname.includes("/contact?book-a-trip")
               ? "text-black/50"
-              : "text-black"
+              : "text-black",
           )}
         >
           Book a Trip

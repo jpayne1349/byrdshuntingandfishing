@@ -67,8 +67,10 @@
         <Button
           href="tel:+19792019082"
           class="font-semibold text-white bg-transparent no-underline text-lg"
-          variant="outline">BOOK A TRIP</Button
+          variant="outline"
         >
+          BOOK A TRIP
+        </Button>
       </div>
       <div
         id="scroll-container"

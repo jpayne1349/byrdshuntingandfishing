@@ -1,15 +1,28 @@
 <script lang="ts">
-  // TODO: use the latest or top index photos for these buttons.
+  import { photoStore } from "$lib/stores/photos";
+  import type { PhotoObject } from "$lib/types/Photo";
+  import { onMount } from "svelte";
 
-  let huntingPhotoURL =
-    "https://firebasestorage.googleapis.com/v0/b/byrds-hunting-fishing.firebasestorage.app/o/hunting%2Ftrophies%2Fphoto_wvrotVaHH9kysJYI7I6q?alt=media&token=8e49327a-01d8-4738-9676-6fea204cb828";
+  let alternatePhotoURL =
+    "https://images.unsplash.com/photo-1484406566174-9da000fda645?q=80&w=1978&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D";
+  let huntingPhotoUrl: string;
+
+  onMount(() => {
+    let firstHuntingPhoto: PhotoObject | undefined;
+    for (let i = 0; i < $photoStore.all.length; i++) {
+      if ($photoStore.all[i].hidden) continue;
+      firstHuntingPhoto = $photoStore.all[i];
+      break;
+    }
+    huntingPhotoUrl = firstHuntingPhoto?.url || alternatePhotoURL;
+  });
 </script>
 
-<div class="container grid min-h-[85vh] grid-cols-2 gap-2">
-  <a href="/cms/photos/hunting" class="text-center"
-    ><div
+<div class="container grid min-h-[85vh] grid-cols-2 lg:grid-cols-6 gap-2">
+  <a href="/cms/photos/hunting" class="text-center">
+    <div
       class="w-full relative aspect-square bg-center bg-cover bg-no-repeat rounded-lg bg-neutral-100"
-      style="background-image:url({huntingPhotoURL});"
+      style="background-image:url({huntingPhotoUrl});"
     >
       <div
         class="flex rounded-lg justify-between px-2 w-[100%] absolute top-0 left-0 w-full shadow-sm h-full"

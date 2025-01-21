@@ -2,9 +2,7 @@
   import * as Table from "$lib/components/ui/table";
 </script>
 
-<section
-  class="flex mx-6 flex-col align-center my-10 h-full lg:mx-auto "
->
+<section class="flex mx-6 flex-col align-center my-10 h-full lg:mx-auto">
   <h1 class="font-semibold mb-2">Unlabeled Deer Pricing</h1>
   <p
     class="font-light text-lg leading-tight tracking-tight text-muted-foreground ml-0"
@@ -14,7 +12,8 @@
   <p
     class="font-light text-lg leading-tight tracking-tight text-muted-foreground ml-0 mb-8"
   >
-    See our straightforward pricing below.<br />
+    See our straightforward pricing below.
+    <br />
   </p>
 
   <Table.Root>
@@ -53,10 +52,11 @@
       <Table.Row class="flex justify-around">
         <Table.Cell
           class="w-[100px] text-center flex justify-center items-center"
-          >>180</Table.Cell
         >
-        <Table.Cell class="w-[100px] text-center"
-          >$8500.00 <p class="text-sm tracking-tight leading-tight">
+          >180
+        </Table.Cell>
+        <Table.Cell class="w-[100px] text-center">
+          $8500.00 <p class="text-sm tracking-tight leading-tight">
             + $125 per inch
           </p>
         </Table.Cell>

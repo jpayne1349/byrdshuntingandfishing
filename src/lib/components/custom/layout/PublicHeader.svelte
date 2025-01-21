@@ -11,7 +11,7 @@
   function setObserver() {
     const observer = new IntersectionObserver(
       ([e]) => e.target.toggleAttribute("data-stuck", e.intersectionRatio < 1),
-      { threshold: [1] }
+      { threshold: [1] },
     );
 
     observer.observe(document.querySelector("header") as Element);

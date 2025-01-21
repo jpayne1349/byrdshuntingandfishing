@@ -11,7 +11,7 @@
   import { fb } from "$lib/stores/firebase";
   import { collection, getDocs, onSnapshot, query } from "firebase/firestore";
   import { photoStore } from "$lib/stores/photos";
-  import type { PhotoType } from "$lib/types/Photo";
+  import { Photo, type PhotoObject } from "$lib/types/Photo";
 
   onMount(async () => {
     await connectionHandler();
@@ -23,15 +23,18 @@
     const unsubscribe = onSnapshot(q, (querySnapshot) => {
       $photoStore.all = [];
       querySnapshot.forEach((doc) => {
-        console.log(doc.data());
-        $photoStore.all = [...$photoStore.all, doc.data() as PhotoType];
+        let photoInstance = new Photo({ ...(doc.data() as PhotoObject) });
+        $photoStore.all = [...$photoStore.all, photoInstance];
       });
-      console.log("photoStore updated: ", $photoStore.all);
+      //console.log("PhotoStore all: ", $photoStore.all);
+      $photoStore.separated = {};
+      $photoStore.separated = Photo.separatePhotos();
+      //console.log("PhotoStore Separated: ", $photoStore.separated);
     });
   }
 </script>
 
-<main class="relative flex flex-col">
+<main class="relative flex flex-col min-h-[118vh]">
   <PublicHeader />
 
   <slot />

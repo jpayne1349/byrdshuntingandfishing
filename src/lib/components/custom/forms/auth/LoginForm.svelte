@@ -52,7 +52,7 @@
       let userCredential = await signInWithEmailAndPassword(
         $fb.auth,
         formFields.email,
-        formFields.password
+        formFields.password,
       );
 
       if (userCredential.user) {

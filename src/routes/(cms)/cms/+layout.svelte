@@ -86,7 +86,7 @@
   <PageSpinner caption="ATTEMPTING LOGIN..." />
 {:else}
   <h2 class="flex justify-center no-underline border-none -mb-2">Owner CMS</h2>
-  <div class="overflow-hidden">
+  <div class="overflow-hidden container">
     <div
       class="flex relative items-center max-w-[85%] w-fit ml-[7.5%] space-x-1 mb-4 mt-2 overflow-scroll whitespace-nowrap flex-row-reverse"
     >

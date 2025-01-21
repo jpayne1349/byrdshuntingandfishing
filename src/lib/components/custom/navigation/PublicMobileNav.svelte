@@ -38,9 +38,9 @@
       </Button>
       <Sheet.Content side="right" class="p-0">
         <MobileSheetLink href="/" class="flex items-center" bind:open>
-          <span class="mt-4 mx-10 font-bold text-primary text-xl text-center"
-            >Byrd's Hunting and Fishing Excursions</span
-          >
+          <span class="mt-4 mx-10 font-bold text-primary text-xl text-center">
+            Byrd's Hunting and Fishing Excursions
+          </span>
         </MobileSheetLink>
 
         <div class="my-4 h-dvh overflow-auto pb-10 pl-0">
