@@ -2,7 +2,7 @@
   import { page } from "$app/stores";
   import { getUserAuth } from "$lib/helpers/user";
   import { loginStore } from "$lib/stores/login";
-  import { fly } from "svelte/transition";
+  import { fade, fly } from "svelte/transition";
 
   let target = $page.url.searchParams.get("target") || undefined;
 
@@ -20,6 +20,7 @@
   <div
     class="form-wrapper flex"
     in:fly={{ x: 50, duration: 1000 }}
+    out:fade
     on:outroend={() => {
       $loginStore.loggingIn = false;
     }}

@@ -11,6 +11,7 @@
   import { loginStore } from "$lib/stores/login";
   import MaxAttemptsAlert from "./MaxAttemptsAlert.svelte";
   import { generateUserRelation, getUser } from "$lib/helpers/user";
+  import { goto } from "$app/navigation";
 
   let isLoading = false;
 

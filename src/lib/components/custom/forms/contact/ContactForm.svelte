@@ -139,6 +139,7 @@
           formSubmitted = false;
         }, 10000);
       } catch (e) {
+        console.log(e);
         new MyEvent({
           type: "form.submission.failed",
           style: "fail",
