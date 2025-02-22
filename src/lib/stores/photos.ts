@@ -10,4 +10,5 @@ export const photoStore = writable<{
   separated: {
     [category: string]: { [subcategory: string]: Photo[] };
   };
-}>({ all: [], separated: {} });
+  populated: boolean;
+}>({ all: [], separated: {}, populated: false });

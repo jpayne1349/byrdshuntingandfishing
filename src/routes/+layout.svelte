@@ -12,6 +12,12 @@
   import { collection, getDocs, onSnapshot, query } from "firebase/firestore";
   import { photoStore } from "$lib/stores/photos";
   import { Photo, type PhotoObject } from "$lib/types/Photo";
+  import { afterNavigate } from "$app/navigation";
+  import { scrollObserverStore } from "$lib/stores/scrollObserver";
+
+  //TODO: waiting for email domain verification and then update the template for password reset
+
+  //TODO: make email required if contact preference is email
 
   onMount(async () => {
     await connectionHandler();
@@ -20,16 +26,18 @@
 
   function populatePhotoStore() {
     const q = query(collection($fb.db, "photos"));
+
     const unsubscribe = onSnapshot(q, (querySnapshot) => {
       $photoStore.all = [];
       querySnapshot.forEach((doc) => {
         let photoInstance = new Photo({ ...(doc.data() as PhotoObject) });
         $photoStore.all = [...$photoStore.all, photoInstance];
       });
+      $photoStore.populated = true;
       //console.log("PhotoStore all: ", $photoStore.all);
       $photoStore.separated = {};
       $photoStore.separated = Photo.separatePhotos();
-      //console.log("PhotoStore Separated: ", $photoStore.separated);
+      // console.log("PhotoStore Separated: ", $photoStore.separated);
     });
   }
 </script>
@@ -38,15 +46,11 @@
   <PublicHeader />
 
   <slot />
-
+  <!-- <div class="fixed bottom-5 right-5">{JSON.stringify($scrollObserverStore.scrolledThrough, null, 2)}</div> -->
   <PublicFooter />
 </main>
 <AlertContainer>
   {#if $alertStore.active}
-    <MyAlert
-      title={$alertStore.active.title}
-      description={$alertStore.active.description}
-      style={$alertStore.active.style}
-    ></MyAlert>
+    <MyAlert title={$alertStore.active.title} description={$alertStore.active.description} style={$alertStore.active.style}></MyAlert>
   {/if}
 </AlertContainer>

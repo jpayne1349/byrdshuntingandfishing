@@ -22,19 +22,7 @@ export class Photo implements PhotoInstance {
   price?: string;
   url?: string;
 
-  constructor(options: {
-    id?: string;
-    added?: number;
-    updated?: number;
-    hidden?: boolean;
-    index?: number;
-    title: string;
-    description?: string;
-    category: string;
-    subcategory: string;
-    price?: string;
-    url?: string;
-  }) {
+  constructor(options: { id?: string; added?: number; updated?: number; hidden?: boolean; index?: number; title: string; description?: string; category: string; subcategory: string; price?: string; url?: string }) {
     // Restore or generate default values
     this.id = options.id || generateUUID("photo_");
     this.added = options.added || Math.floor(Date.now() / 1000);
@@ -47,9 +35,7 @@ export class Photo implements PhotoInstance {
     this.subcategory = options.subcategory;
 
     //dependent on category & subcategory
-    this.index =
-      options.index ??
-      Photo.nextAvailableIndex(this.category, this.subcategory);
+    this.index = options.index ?? Photo.nextAvailableIndex(this.category, this.subcategory);
 
     // Optional fields
     if (options.description) this.description = options.description;
@@ -193,9 +179,7 @@ export class Photo implements PhotoInstance {
       separatedPhotos[categoryKey][subcategoryKey].push(photo);
 
       // Sort the array by the index property
-      separatedPhotos[categoryKey][subcategoryKey].sort(
-        (a, b) => (a.index ?? 0) - (b.index ?? 0),
-      );
+      separatedPhotos[categoryKey][subcategoryKey].sort((a, b) => (a.index ?? 0) - (b.index ?? 0));
     });
 
     return separatedPhotos;

@@ -3,8 +3,10 @@
   import { getUserAuth } from "$lib/helpers/user";
   import { loginStore } from "$lib/stores/login";
   import PageSpinner from "$lib/components/custom/spinners/PageSpinner.svelte";
-  import { ChevronRight } from "lucide-svelte";
+  import { ChevronRight, LogOut } from "lucide-svelte";
   import { photoStore } from "$lib/stores/photos";
+  import { fb } from "$lib/stores/firebase";
+  import { signOut } from "firebase/auth";
 
   let target = $page.url.pathname;
   getUserAuth(target);
@@ -31,11 +33,7 @@
             if (matchingPhoto?.title) {
               return {
                 label: matchingPhoto.title.toUpperCase(),
-                url:
-                  "/cms/photos/" +
-                  $page.params.category +
-                  "/" +
-                  matchingPhoto.id,
+                url: "/cms/photos/" + $page.params.category + "/" + matchingPhoto.id,
               };
             } else {
               return { label: "ERROR", url: "" };
@@ -75,6 +73,14 @@
     console.log("index ", index, "returning linkpath", linkPath);
     return linkPath;
   }
+
+  function logout() {
+    signOut($fb.auth)
+      .then(() => {
+        // goto needed or auto redirects?
+      })
+      .catch((err) => {});
+  }
 </script>
 
 <svelte:head>
@@ -85,11 +91,14 @@
 {#if !$loginStore.loggedIn || $loginStore.loggingIn}
   <PageSpinner caption="ATTEMPTING LOGIN..." />
 {:else}
-  <h2 class="flex justify-center no-underline border-none -mb-2">Owner CMS</h2>
+  <div class="relative max-w-[800px] w-full mx-auto">
+    <h2 class="flex justify-center no-underline border-none -mb-2">Owner CMS</h2>
+    <button class="absolute right-10 top-1" on:click={logout}>
+      <LogOut />
+    </button>
+  </div>
   <div class="overflow-hidden container">
-    <div
-      class="flex relative items-center max-w-[85%] w-fit ml-[7.5%] space-x-1 mb-4 mt-2 overflow-scroll whitespace-nowrap flex-row-reverse"
-    >
+    <div class="flex relative items-center max-w-[85%] w-fit ml-[7.5%] space-x-1 mb-4 mt-2 overflow-scroll whitespace-nowrap flex-row-reverse">
       {#each breadCrumbs as crumb, index}
         {#if index == 0}
           <p class="font-bold no-underline">{crumb.label}</p>

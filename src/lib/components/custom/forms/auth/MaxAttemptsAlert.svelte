@@ -14,22 +14,10 @@
       <AlertDialog.Title>Is Everything Okay?</AlertDialog.Title>
       <AlertDialog.Description>
         {#if type == "login"}
-          You've tried logging in too many times. If this continues, we will
-          restrict your access to our site. Please contact <a
-            href="/contact#support"
-            class="underline underline-offset-4 hover:text-primary"
-          >
-            support
-          </a>
+          You've tried logging in too many times. If this continues, we will restrict your access to our site. Please contact <a href="/contact?referrer=login_attempts_timeout" class="underline underline-offset-4 hover:text-primary"> support </a>
           if you have any questions.
         {:else if type == "create_account"}
-          It looks like you tried making an account too many times. If this
-          continues, we will restrict your access to our site. Please contact <a
-            href="/contact#support"
-            class="underline underline-offset-4 hover:text-primary"
-          >
-            support
-          </a>
+          It looks like you tried making an account too many times. If this continues, we will restrict your access to our site. Please contact <a href="/contact?referrer=create_account_attempts_timeout" class="underline underline-offset-4 hover:text-primary"> support </a>
           if you have any questions.
         {/if}
       </AlertDialog.Description>

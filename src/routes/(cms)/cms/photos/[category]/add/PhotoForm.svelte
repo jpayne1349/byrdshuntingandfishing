@@ -15,7 +15,7 @@
   import { MyEvent } from "$lib/types/Event";
   import { goto } from "$app/navigation";
   import { Trash } from "lucide-svelte";
-  import { photoStore } from "$lib/stores/photos";
+  import { toTitleString } from "$lib/helpers/strings";
 
   let page_category = $page.params.category as string;
 
@@ -33,32 +33,28 @@
   let originalIndex = photoInstance.index;
   let indexUpdated: boolean;
 
-  let hiddenPhotoMessage: "ADD PHOTO BACK" | "HIDE THIS PHOTO" =
-    photoInstance.hidden ? "ADD PHOTO BACK" : "HIDE THIS PHOTO";
+  $: hiddenPhotoMessage = photoInstance.hidden ? "ADD PHOTO BACK - CATEGORY:" + photoInstance.category.toUpperCase() : "HIDE THIS PHOTO";
 
   var img_preview_src: string = photoInstance.url ? photoInstance.url : "";
   let file_input: HTMLInputElement;
   var file: File | null;
   let submittingForm = false;
 
-  const capitalizeFirst = (str: string) =>
-    str.charAt(0).toUpperCase() + str.slice(1);
-  const delay = (ms: number) =>
-    new Promise((resolve) => setTimeout(resolve, ms));
+  const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 
   function autofillCategory() {
-    if (page_category) {
+    if (page_category != "hidden") {
       photoInstance.category = page_category;
-      return { value: page_category, label: capitalizeFirst(page_category) };
+      return { value: page_category, label: toTitleString(page_category) };
     }
-    return { value: "" };
+    return { value: photoInstance.category, label: toTitleString(photoInstance.category) };
   }
 
   function autfillSubcategory() {
     if (photoInstance.subcategory != "") {
       return {
         value: photoInstance.subcategory,
-        label: capitalizeFirst(photoInstance.subcategory),
+        label: toTitleString(photoInstance.subcategory),
       };
     }
     return { value: "" };
@@ -83,15 +79,26 @@
   }
 
   function validateSelectFields() {
+    console.log("validating");
     if (!photoInstance.category) {
       errors.category = true;
     }
-    if (!photoInstance.subcategory) {
+    if (!photoInstance.subcategory || photoInstance.subcategory.length === 0) {
       errors.subcategory = true;
     }
-    if (!errors.category || !errors.subcategory) {
+    if (errors.category || errors.subcategory) {
+      new MyEvent({
+        type: "photos.add.failed",
+        style: "fail",
+        title: "Missing Information",
+        description: "Please select a Category & Subcategory.",
+        visibility: "local",
+        persist: false,
+      });
+
       submittingForm = false;
     }
+
     return submittingForm;
   }
 
@@ -105,11 +112,7 @@
       persist: false,
     });
     // shift to like the highest index and run an update on all the others
-    photoInstance.index =
-      Photo.nextAvailableIndex(
-        photoInstance.category,
-        photoInstance.subcategory,
-      ) - 1;
+    photoInstance.index = Photo.nextAvailableIndex(photoInstance.category, photoInstance.subcategory) - 1;
     photoInstance.hidden = true;
     operation.saveEvent();
     await photoInstance.updatePhoto();
@@ -126,10 +129,7 @@
       persist: false,
     });
     // shift to like the highest index and run an update on all the others
-    photoInstance.index = Photo.nextAvailableIndex(
-      photoInstance.category,
-      photoInstance.subcategory,
-    );
+    photoInstance.index = Photo.nextAvailableIndex(photoInstance.category, photoInstance.subcategory);
     photoInstance.hidden = false;
     operation.saveEvent();
     await photoInstance.updatePhoto();
@@ -145,13 +145,7 @@
       id="add-photo-form"
       enctype="multipart/form-data"
       method="POST"
-      use:enhance={async ({
-        formElement,
-        formData,
-        action,
-        cancel,
-        submitter,
-      }) => {
+      use:enhance={async ({ formElement, formData, action, cancel, submitter }) => {
         submittingForm = true;
         await delay(200);
         // many of the fields are already mapped and set as required in the html, so less verification is needed.
@@ -162,7 +156,7 @@
           formFields[key] = value;
         }
 
-        if (!validateSelectFields) {
+        if (!validateSelectFields()) {
           cancel();
           return;
         }
@@ -176,14 +170,13 @@
               await photoInstance.updateIndexes(originalIndex);
             }
 
-            await goto("/cms/photos/" + page_category);
+            await goto("/cms/photos/" + page_category + "?subcategory=" + photoInstance.subcategory);
           } catch (e) {
             new MyEvent({
               type: "photos.create.fail",
               style: "fail",
               title: "Photo Addition Failed",
-              description:
-                "Something went wrong. Please check the developer console.",
+              description: "Something went wrong. Please check the developer console.",
               visibility: "local",
               persist: false,
             });
@@ -197,14 +190,13 @@
             if (indexUpdated) {
               await photoInstance.updateIndexes(originalIndex);
             }
-            await goto("/cms/photos/" + page_category);
+            await goto("/cms/photos/" + page_category + "?subcategory=" + photoInstance.subcategory);
           } catch (e) {
             new MyEvent({
               type: "photos.update.fail",
               style: "fail",
               title: "Photo Update Failed",
-              description:
-                "Something went wrong. Please check the developer console.",
+              description: "Something went wrong. Please check the developer console.",
               visibility: "local",
               persist: false,
             });
@@ -229,13 +221,19 @@
         };
       }}
     >
+      {#if form_type == "add"}
+        <Label>*Photo File</Label>
+        <Input
+          required
+          name="file"
+          type="file"
+          on:change={(event) => {
+            showFilePreview(event);
+          }}
+        />
+      {/if}
       <Label>*Photo Title / Name</Label>
-      <Input
-        class="text-base"
-        required
-        bind:value={photoInstance.title}
-        name="title"
-      />
+      <Input class="text-base" required bind:value={photoInstance.title} name="title" />
 
       <Label>*Photo Category</Label>
       <Select.Root
@@ -254,15 +252,18 @@
           <Select.Value placeholder="" />
         </Select.Trigger>
         <Select.Content>
-          <Select.Item value="hunting">Hunting</Select.Item>
+          {#if $page.params.category == "hidden"}
+            <Select.Item value={photoInstance.category}>{toTitleString(photoInstance.category)}</Select.Item>
+          {:else}
+            <Select.Item value={$page.params.category}>{toTitleString($page.params.category)}</Select.Item>
+          {/if}
         </Select.Content>
         <Tooltip.Root open={errors.category}>
           <Tooltip.Content
-            class="h-16 -mt-2 absolute flex items-center shadow-md border-none"
+            class="h-12 -mt-0 absolute flex 
+            items-center shadow-[0_1px_3px_rgba(0,0,0,0.2),0_-1px_3px_rgba(0,0,0,0.2)] border-none"
           >
-            <p class="text-sm font-regular font-sans tracking-tight">
-              Please Select a Category
-            </p>
+            <p class="text-xs font-regular font-sans tracking-tight">Please Select a Category</p>
           </Tooltip.Content>
         </Tooltip.Root>
       </Select.Root>
@@ -277,10 +278,7 @@
 
           // this selection change is updating the Photo Index input value but not
           // triggering the on:change listener.
-          photoInstance.index = Photo.nextAvailableIndex(
-            photoInstance.category,
-            photoInstance.subcategory,
-          );
+          photoInstance.index = Photo.nextAvailableIndex(photoInstance.category, photoInstance.subcategory);
         }}
         onOpenChange={() => {
           errors.subcategory = false;
@@ -295,70 +293,41 @@
             <Select.Item value="trophies">Trophies</Select.Item>
             <Select.Item value="ranch_photos">Ranch Photos</Select.Item>
           {/if}
+          {#if page_category == "fishing"}
+            <Select.Item value="on_the_water">On The Water</Select.Item>
+          {/if}
         </Select.Content>
         <Tooltip.Root open={errors.subcategory}>
           <Tooltip.Content
-            class="h-16 -mt-2 absolute flex 
-            items-center shadow-md border-none"
+            class="h-12 -mt-0 absolute flex 
+            items-center shadow-[0_1px_3px_rgba(0,0,0,0.2),0_-1px_3px_rgba(0,0,0,0.2)] border-none"
           >
-            <p class="text-sm font-regular font-sans tracking-tight">
-              Please Select a Subcategory
-            </p>
+            <p class="text-xs font-regular font-sans tracking-tight">Please Select a Subcategory</p>
           </Tooltip.Content>
         </Tooltip.Root>
       </Select.Root>
       {#if photoInstance.subcategory == "trophies"}
         <div in:slide={{ delay: 100 }}>
           <Label>*Trophy Price</Label>
-          <Input
-            class="text-base"
-            name="price"
-            type="number"
-            required
-            bind:value={photoInstance.price}
-          />
+          <Input class="text-base" name="price" type="number" required bind:value={photoInstance.price} />
         </div>
       {/if}
       <Label>Photo Description</Label>
-      <Textarea
-        class="text-base"
-        name="description"
-        bind:value={photoInstance.description}
-      />
-      {#if form_type == "add"}
-        <Label>*Photo File</Label>
-        <Input
-          required
-          name="file"
-          type="file"
-          on:change={(event) => {
-            showFilePreview(event);
-          }}
-        />
-      {/if}
+      <Textarea class="text-base" name="description" bind:value={photoInstance.description} />
 
       {#if !photoInstance.hidden}
         {#if form_type == "add"}
           <Label>
             Photo Index <span class="text-[12px] ml-4 text-muted-foreground">
-              Min: 1 | Max: {Photo.nextAvailableIndex(
-                photoInstance.category,
-                photoInstance.subcategory,
-              )}
+              Min: 1 | Max: {Photo.nextAvailableIndex(photoInstance.category, photoInstance.subcategory)}
             </span>
           </Label>
           <Input
             type="number"
             name="index"
-            max={Photo.nextAvailableIndex(
-              photoInstance.category,
-              photoInstance.subcategory,
-            )}
+            max={Photo.nextAvailableIndex(photoInstance.category, photoInstance.subcategory)}
             min="1"
-            value={Photo.nextAvailableIndex(
-              photoInstance.category,
-              photoInstance.subcategory,
-            )}
+            value="1"
             class="w-16 text-base text-center"
             on:change={(event) => {
               //@ts-ignore
@@ -369,19 +338,13 @@
         {:else}
           <Label>
             Photo Index <span class="text-[12px] ml-4 text-muted-foreground">
-              Min: 1 | Max: {Photo.nextAvailableIndex(
-                photoInstance.category,
-                photoInstance.subcategory,
-              ) - 1}
+              Min: 1 | Max: {Photo.nextAvailableIndex(photoInstance.category, photoInstance.subcategory) - 1}
             </span>
           </Label>
           <Input
             type="number"
             name="index"
-            max={Photo.nextAvailableIndex(
-              photoInstance.category,
-              photoInstance.subcategory,
-            ) - 1}
+            max={Photo.nextAvailableIndex(photoInstance.category, photoInstance.subcategory) - 1}
             min="1"
             value={photoInstance.index.toString()}
             class="w-16 text-base text-center"
@@ -392,16 +355,10 @@
             }}
           />
         {/if}
-        <p class="text-xs text-muted-foreground font-thin">
-          Sets the display order of the photo in this subcategory.
-        </p>
+        <p class="text-xs text-muted-foreground font-thin">Sets the display order of the photo in this subcategory.</p>
       {/if}
 
-      <Button
-        class="mt-4 w-full font-semibold"
-        type="submit"
-        form="add-photo-form"
-      >
+      <Button class="mt-4 w-full font-semibold" type="submit" form="add-photo-form">
         {#if submittingForm}
           <ButtonSpinner />
         {:else if form_type == "add"}
@@ -420,7 +377,7 @@
           photoInstance.hidden ? addPhotoBack() : hidePhoto();
         }}
       >
-        <Trash class="absolute left-2" />
+        <Trash class="absolute left-2 w-5 h-5" />
         <p class="font-semibold">
           {hiddenPhotoMessage}
         </p>
@@ -432,11 +389,7 @@
     <p class="text-muted-foreground mt-10 lg:mt-0">Preview</p>
     <div class="flex w-full relative">
       {#if photoInstance.hidden}
-        <p
-          class="absolute w-[60%] text-center top-[5%] left-[20%] text-2xl font-bold text-white z-10"
-        >
-          PHOTO HIDDEN
-        </p>
+        <p class="absolute w-[60%] text-center top-[5%] left-[20%] text-2xl font-bold text-white z-10">PHOTO HIDDEN</p>
         <div class="flex blur-sm w-full">
           <PreviewPhoto src={img_preview_src} />
         </div>

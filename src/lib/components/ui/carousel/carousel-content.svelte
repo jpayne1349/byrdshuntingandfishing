@@ -3,15 +3,14 @@
   import emblaCarouselSvelte from "embla-carousel-svelte";
   import { getEmblaContext } from "./context.js";
   import { cn } from "$lib/utils.js";
+  import { fade, fly } from "svelte/transition";
 
   type $$Props = HTMLAttributes<HTMLDivElement>;
 
   let className: string | undefined | null = undefined;
   export { className as class };
 
-  const { orientation, options, plugins, onInit } = getEmblaContext(
-    "<Carousel.Content/>",
-  );
+  const { orientation, options, plugins, onInit } = getEmblaContext("<Carousel.Content/>");
 </script>
 
 <div
@@ -27,15 +26,7 @@
   }}
   on:emblaInit={onInit}
 >
-  <div
-    class={cn(
-      "flex",
-      $orientation === "horizontal" ? "-ml-4" : "-mt-4 flex-col",
-      className,
-    )}
-    data-embla-container=""
-    {...$$restProps}
-  >
+  <div in:fly={{ x: -200, duration: 1000, delay: 100 }} class={cn("flex", $orientation === "horizontal" ? "-ml-4" : "-mt-4 flex-col", className)} data-embla-container="" {...$$restProps}>
     <slot />
   </div>
 </div>

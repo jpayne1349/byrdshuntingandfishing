@@ -1,0 +1,5 @@
+User-agent: *
+Disallow: /auth/
+Disallow: /cms/
+Disallow: /api/
+Sitemap: https://www.byrdshuntingandfishing.com/sitemap.xml

@@ -1,110 +1,111 @@
 <script lang="ts">
-  import Button from "$lib/components/ui/button/button.svelte";
   import Separator from "$lib/components/ui/separator/separator.svelte";
-  import bgPhoto from "$lib/photos/deer_homepage_bg.jpg";
-  import { ChevronDown } from "lucide-svelte";
+  import SplatterBackground from "./SplatterBackground.svelte";
+  import fishingBgPhoto from "$lib/photos/fishing_bg_darkened.png";
   import { onMount } from "svelte";
+  import Button from "$lib/components/ui/button/button.svelte";
+  import WordCarouselTemplate from "./WordCarouselTemplate.svelte";
+  import CaptainCard from "./CaptainCard.svelte";
+  import captainBradyPhoto from "$lib/photos/captainBrady.png";
+  import captainRonniePhoto from "$lib/photos/captainRonnie.png";
+  import OnTheWaterBg from "$lib/components/custom/svg/OnTheWaterBg.svelte";
+  import MyCarousel from "$lib/components/custom/photos/MyCarousel.svelte";
+  import ContactForm from "$lib/components/custom/forms/contact/ContactForm.svelte";
+  import { scrollObserverStore } from "$lib/stores/scrollObserver";
+  import { observeScroll } from "$lib/helpers/intersectionObserver";
+  import Skeleton from "$lib/components/ui/skeleton/skeleton.svelte";
   import { fade } from "svelte/transition";
 
+  let headingDiv: HTMLElement;
+  let landingPhotoHeight: number = 500;
   let windowHeight: number;
   let windowCalcDone = false;
+  let windowWidth: number; //for the photos svg background
 
   onMount(() => {
     windowHeight = window.innerHeight;
-    console.log("Window Height:", windowHeight);
+    windowWidth = window.innerWidth;
+    landingPhotoHeight = windowHeight - headingDiv.offsetHeight - 62;
+    // if on desktop, set a resize listener. not for mobile
+    if (window.innerWidth > 500) {
+      landingPhotoHeight = windowHeight - headingDiv.offsetHeight - 94;
+      window.addEventListener("resize", () => {
+        windowHeight = window.innerHeight;
+        landingPhotoHeight = windowHeight - headingDiv.offsetHeight - 94;
+
+        windowWidth = window.innerWidth;
+      });
+    }
     windowCalcDone = true;
   });
 
-  function scrollPage() {
-    window.scrollTo({
-      top: windowHeight,
-      left: 0,
-      behavior: "smooth",
-    });
-  }
+  let locationsList = ["Galveston Bay", "Matagorda Bay", "Intracoastal Canal", "BLANK", "PREFILL", "ETC"];
+  let speciesList = ["Redfish", "Speckled Trout", "Flounder", "BLANK", "PREFILL", "ETC"];
 </script>
 
 <svelte:head>
-  <title>Byrd's Hunting & Fishing Excursions</title>
-  <meta
-    name="description"
-    content="Trophy Whitetail with a private cabin. Massive Redfish out of Matagorda Bay. Check out what we have to offer at Byrd's Hunting and Fishing Excursions in south Texas."
-  />
+  <title>Fishing Charters with Captain Byrd</title>
+  <meta name="description" content="Sit back and relax while we put you on the fish! Inshore bay fishing out of Matagorda, Galveston, and the Texas Gulf Coast." />
 </svelte:head>
 
-<div
-  id="background-image"
-  class="absolute top-0 left-0 max-w-[100vw] w-[100vw] bg-center bg-cover bg-no-repeat"
-  style="background-image:url({bgPhoto}); height:{windowHeight}px;"
-></div>
+<section id="fishing-landing-view" class="" use:observeScroll={{ sectionId: "fishingLanding", observerStore: scrollObserverStore }}>
+  <div class="flex flex-col items-center justify-center pt-2 pb-6 relative md:pt-0 md:pb-12" bind:this={headingDiv}>
+    {#if $scrollObserverStore.scrolledThrough["fishingLanding"]}
+      <SplatterBackground />
+    {/if}
+    <h1
+      class="text-5xl font-semibold text-center
+              xl:text-6xl
+              2xl:text-8xl"
+    >
+      BYRD'S FISHING
+    </h1>
+    <h1
+      class="text-2xl font-bold
+              2xl:text-4xl"
+    >
+      Join us on the Water
+    </h1>
+    <Separator class="mt-4 h-1 w-24 bg-accent-foreground rounded-lg"></Separator>
+  </div>
 
-<section
-  id="home-landing"
-  class="transition-all relative flex flex-col w-[100vw] h-[90vh] px-4 justify-center"
-  style="height:{windowHeight - 64}px;"
->
-  <h3
-    class="xl:absolute mt-4 mb-auto xl:mt-0 left-[5vw] xl:top-[65vh] xl:max-w-[50vh] text-white font-bold text-5xl xl:text-7xl 3xl:text-9xl border-none text-center tracking-tight leading-12"
-  >
-    EXPERIENCE TEXAS OUTDOORS
-  </h3>
   {#if windowCalcDone}
-    <div
-      id="button-container"
-      class="container flex justify-center mt-auto mb-16"
-      in:fade={{ duration: 1000, delay: 200 }}
-    >
-      <Button
-        href="/contact?book-a-trip"
-        class="font-semibold text-white bg-transparent no-underline text-lg"
-        variant="outline"
-      >
-        BOOK A TRIP
-      </Button>
+    <!-- {#if false} -->
+    <div style="background-image:url({fishingBgPhoto});  height:{landingPhotoHeight}px;" class="max-w-[100vw] w-[100vw] bg-[calc(100%+30px)_center] bg-cover bg-no-repeat relative flex items-end justify-center animate-bg-pan lg:animate-none xl:bg-center">
+      <div in:fade={{ delay: 200 }} id="button-container" class="container flex justify-center mt-auto mb-24">
+        <Button href="/contact?referrer=fishing_drop_a_line" class="font-semibold text-white bg-transparent no-underline text-lg" variant="outline">DROP A LINE</Button>
+      </div>
     </div>
-    <div
-      id="scroll-container"
-      class="container flex justify-center mb-6"
-      in:fade={{ duration: 1000, delay: 500 }}
-    >
-      <Button
-        variant="ghost"
-        class="bg-transparent hover:bg-transparent text-white"
-        on:click={scrollPage}
-      >
-        <ChevronDown class="stroke-secondary w-8 h-8"></ChevronDown>
-      </Button>
-    </div>
+  {:else}
+    <!-- estimated window space for placeholder for above -->
+    <Skeleton
+      class="w-screen h-[130vw]  relative
+                  lg:h-[70vh]
+                  3xl:h-[80vh]"
+    ></Skeleton>
   {/if}
 </section>
-<section class="relative container mt-10">
-  <h4 class="px-2 text-2xl font-bolt mt-0">Byrd Ranch</h4>
-  <Separator class="w-10 ml-1 h-1 my-1 bg-accent-foreground" />
-  <div id="details" class="px-6 text-lg font-medium space-y-8">
-    <p>
-      Established in 2006, Byrd Ranch is a 275 acre ranch located just north of
-      Sweeny, Texas on the San Bernard River.
-    </p>
-    <p>
-      This property has whitetail deer, hogs, dove and wood ducks among a
-      variety of other wildlife to enjoy. We also have a wide variety of birds
-      that can be enjoyed including hawks, owls, cardinals, herons, ducks, and
-      spoonbills to name a few.
-    </p>
-    <p>
-      <a href="/the_cabin">The Cabin</a>
-      was built in 2020. This house was built in the woods and a wonderful place
-      to disconnect and enjoy some down time.
-    </p>
-  </div>
-  <!-- <iframe
-    title="Google Maps Location"
-    jsname="L5Fo6c"
-    class="YMEQtf"
-    sandbox="allow-scripts allow-popups allow-forms allow-same-origin allow-popups-to-escape-sandbox allow-downloads allow-modals allow-storage-access-by-user-activation"
-    frameborder="0"
-    aria-label="Map, 9303 Farm to Market Rd 1459"
-    src="https://maps-api-ssl.google.com/maps?hl=en&amp;ll=29.055989,-95.687797&amp;output=embed&amp;q=9303+Farm+to+Market+Rd+1459,+Sweeny,+TX+77480,+USA+(9303+Farm+to+Market+Rd+1459)&amp;z=17"
-    allowfullscreen=""
-  ></iframe> -->
+
+<section id="fishing-areas-and-species" class="flex flex-col space-y-6 my-10 md:my-20">
+  <WordCarouselTemplate wordList={locationsList} />
+  <WordCarouselTemplate wordList={speciesList} direction="backward" />
 </section>
+
+<section
+  id="captain-bio"
+  class="flex flex-col container justify-center space-y-10 pb-10 mb-20
+        md:flex-row md:space-y-0 md:space-x-20"
+>
+  <CaptainCard photoSrc={captainRonniePhoto} nameAndTitle="Captain Ronnie Byrd" bioText="Licensed charter boat captain with X years experience in the area. (to be populated)" />
+  <CaptainCard photoSrc={captainBradyPhoto} nameAndTitle="Captain Brady Byrd" bioText="Licensed charter boat captain with X years experience in the area. (to be populated)" />
+</section>
+
+<section id="on-the-water-photos" class="pb-8 mb-20 relative space-y-6 overflow-hidden">
+  <OnTheWaterBg />
+
+  <MyCarousel category="fishing" subcategory="on_the_water" />
+</section>
+
+<ContactForm bgColor="EAF6F6" />
+
+<div class="h-24"></div>

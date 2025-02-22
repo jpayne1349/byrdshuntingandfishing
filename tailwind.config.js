@@ -14,7 +14,7 @@ const config = {
       },
     },
     extend: {
-      screens: { "3xl": "2000px" },
+      screens: { xs: "475px", "3xl": "2000px" },
       colors: {
         border: "hsl(var(--border) / <alpha-value>)",
         input: "hsl(var(--input) / <alpha-value>)",
@@ -58,6 +58,22 @@ const config = {
       fontFamily: {
         open_sans: ["Open Sans"],
         sans: [...fontFamily.sans],
+      },
+      height: {
+        "screen-minus-header": "calc(100vh - 6rem)", // Define custom height
+      },
+      keyframes: {
+        pan: {
+          "0%": { backgroundPosition: "calc(100% + 30px) center" } /* Start position */,
+          "20%": { backgroundPosition: "calc(100% + 30px) center" } /* Pause at start */,
+          "40%": { backgroundPosition: "0% center" } /* Quick slide left */,
+          "60%": { backgroundPosition: "0% center" } /* Pause on left */,
+          "80%": { backgroundPosition: "calc(100% + 30px) center" } /* Quick slide right */,
+          "100%": { backgroundPosition: "calc(100% + 30px) center" } /* Back to start */,
+        },
+      },
+      animation: {
+        "bg-pan": "pan 25s ease-in-out infinite", // Total cycle duration
       },
     },
   },

@@ -1,110 +1,104 @@
 <script lang="ts">
   import Button from "$lib/components/ui/button/button.svelte";
-  import Separator from "$lib/components/ui/separator/separator.svelte";
-  import bgPhoto from "$lib/photos/deer_homepage_bg.jpg";
-  import { ChevronDown } from "lucide-svelte";
+  import theCabinBg from "$lib/photos/theCabinBg.png";
+  import cabinKitchen from "$lib/photos/cabin_kitchen.png";
+  import livingArea from "$lib/photos/living_area_cabin.png";
+  import bedrooms from "$lib/photos/bedrooms_cabin.png";
+  import bathrooms from "$lib/photos/bathrooms_cabin.png";
   import { onMount } from "svelte";
-  import { fade } from "svelte/transition";
+  import MainCard from "./MainCard.svelte";
+  import SubCard from "./SubCard.svelte";
+  import CabinRates from "./CabinRates.svelte";
+  import ContactForm from "$lib/components/custom/forms/contact/ContactForm.svelte";
+  import { observeScroll } from "$lib/helpers/intersectionObserver";
+  import { scrollObserverStore } from "$lib/stores/scrollObserver";
+  import { fade, fly } from "svelte/transition";
+  import Skeleton from "$lib/components/ui/skeleton/skeleton.svelte";
 
+  let headingDiv: HTMLElement;
+  let landingPhotoHeight: number = 500;
   let windowHeight: number;
   let windowCalcDone = false;
+  let windowWidth: number; //for the photos svg background
 
   onMount(() => {
     windowHeight = window.innerHeight;
-    console.log("Window Height:", windowHeight);
+    windowWidth = window.innerWidth;
+    landingPhotoHeight = windowHeight - 62;
+    // if on desktop, set a resize listener. not for mobile
+    if (window.innerWidth > 500) {
+      landingPhotoHeight = windowHeight - 94;
+      window.addEventListener("resize", () => {
+        windowHeight = window.innerHeight;
+        landingPhotoHeight = windowHeight - 94;
+
+        windowWidth = window.innerWidth;
+      });
+    }
     windowCalcDone = true;
   });
-
-  function scrollPage() {
-    window.scrollTo({
-      top: windowHeight,
-      left: 0,
-      behavior: "smooth",
-    });
-  }
 </script>
 
 <svelte:head>
-  <title>Byrd's Hunting & Fishing Excursions</title>
-  <meta
-    name="description"
-    content="Trophy Whitetail with a private cabin. Massive Redfish out of Matagorda Bay. Check out what we have to offer at Byrd's Hunting and Fishing Excursions in south Texas."
-  />
+  <title>The Cabin at Byrd Ranch | Hunting Lodge</title>
+  <meta name="description" content="Included in our hunting packages! Check out our secluded 3 bedroom cabin for a weekend with nature or your place to rest up after a day of hunting or fishing." />
 </svelte:head>
 
-<div
-  id="background-image"
-  class="absolute top-0 left-0 max-w-[100vw] w-[100vw] bg-center bg-cover bg-no-repeat"
-  style="background-image:url({bgPhoto}); height:{windowHeight}px;"
-></div>
+{#if windowCalcDone}
+  <!-- {#if false} -->
+  <section id="the-cabin-landing" class="bg-cover bg-center bg-no-repeat relative bg-slate-900" style="background-image:url({theCabinBg});  height:{landingPhotoHeight}px;">
+    <div
+      class="absolute w-full h-[70%] flex flex-col items-center justify-center
+          lg:h-[55vh]"
+    >
+      <h1
+        class="text-6xl font-semibold text-center text-white
+              xl:text-7xl
+              3xl:text-8xl"
+      >
+        THE CABIN
+      </h1>
+      <h1
+        class="text-xl mt-2 font-bold text-white
+              2xl:text-2xl"
+      >
+        A Private Retreat
+      </h1>
+    </div>
 
-<section
-  id="home-landing"
-  class="transition-all relative flex flex-col w-[100vw] h-[90vh] px-4 justify-center"
-  style="height:{windowHeight - 64}px;"
->
-  <h3
-    class="xl:absolute mt-4 mb-auto xl:mt-0 left-[5vw] xl:top-[65vh] xl:max-w-[50vh] text-white font-bold text-5xl xl:text-7xl 3xl:text-9xl border-none text-center tracking-tight leading-12"
-  >
-    EXPERIENCE TEXAS OUTDOORS
-  </h3>
-  {#if windowCalcDone}
-    <div
-      id="button-container"
-      class="container flex justify-center mt-auto mb-16"
-      in:fade={{ duration: 1000, delay: 200 }}
-    >
-      <Button
-        href="/contact?book-a-trip"
-        class="font-semibold text-white bg-transparent no-underline text-lg"
-        variant="outline"
-      >
-        BOOK A TRIP
-      </Button>
+    <div in:fade={{ delay: 200 }} id="button-container" class="absolute bottom-24 left-0 w-full flex justify-center">
+      <Button href="/contact?referrer=cabin_schedule_now" class="font-semibold text-white bg-transparent no-underline text-lg" variant="outline">SCHEDULE NOW</Button>
     </div>
-    <div
-      id="scroll-container"
-      class="container flex justify-center mb-6"
-      in:fade={{ duration: 1000, delay: 500 }}
-    >
-      <Button
-        variant="ghost"
-        class="bg-transparent hover:bg-transparent text-white"
-        on:click={scrollPage}
-      >
-        <ChevronDown class="stroke-secondary w-8 h-8"></ChevronDown>
-      </Button>
-    </div>
-  {/if}
-</section>
-<section class="relative container mt-10">
-  <h4 class="px-2 text-2xl font-bolt mt-0">Byrd Ranch</h4>
-  <Separator class="w-10 ml-1 h-1 my-1 bg-accent-foreground" />
-  <div id="details" class="px-6 text-lg font-medium space-y-8">
-    <p>
-      Established in 2006, Byrd Ranch is a 275 acre ranch located just north of
-      Sweeny, Texas on the San Bernard River.
-    </p>
-    <p>
-      This property has whitetail deer, hogs, dove and wood ducks among a
-      variety of other wildlife to enjoy. We also have a wide variety of birds
-      that can be enjoyed including hawks, owls, cardinals, herons, ducks, and
-      spoonbills to name a few.
-    </p>
-    <p>
-      <a href="/the_cabin">The Cabin</a>
-      was built in 2020. This house was built in the woods and a wonderful place
-      to disconnect and enjoy some down time.
-    </p>
+  </section>
+{:else}
+  <!-- estimated window space for placeholder for above -->
+  <Skeleton
+    class="w-screen h-[160vw]  relative bg-[#FFF7F1]
+                lg:h-[90vh]
+                3xl:h-[95vh]"
+  ></Skeleton>
+{/if}
+
+<section class="container">
+  <MainCard title="Full Kitchen" description="The kitchen includes a refrigerator, stove,  dishwasher, garbage disposal, Keurig coffee pot and Bunn coffee pot.   Fully stocked dinnerware, glassware, coffee cups, cookware, and  utensils. " photoSrc={cabinKitchen} />
+
+  <div use:observeScroll={{ sectionId: "cabinSubcards", observerStore: scrollObserverStore }} id="subcards-container" class="flex flex-col space-y-6 md:flex-row md:justify-between md:items-center md:space-y-0 md:my-16">
+    {#if $scrollObserverStore.scrolledThrough["cabinSubcards"]}
+      <div in:fly={{ x: -200, duration: 1000 }}>
+        <SubCard title="Living Area" description="Including large TV, card table, and sofa." photoSrc={livingArea} />
+      </div>
+      <div in:fly={{ y: 100, duration: 1000 }}>
+        <SubCard title="Three Bedrooms" description="Each bedroom has a twin and full size bed, alarm clock, bedside lamp.  Complimentary water and snacks." photoSrc={bedrooms} />
+      </div>
+      <div in:fly={{ x: 200, duration: 1000 }}>
+        <SubCard title="Three Bathrooms" description="Each bedroom has a bathroom with shower, sink, toilet and hair dryer." photoSrc={bathrooms} />
+      </div>
+    {/if}
   </div>
-  <!-- <iframe
-    title="Google Maps Location"
-    jsname="L5Fo6c"
-    class="YMEQtf"
-    sandbox="allow-scripts allow-popups allow-forms allow-same-origin allow-popups-to-escape-sandbox allow-downloads allow-modals allow-storage-access-by-user-activation"
-    frameborder="0"
-    aria-label="Map, 9303 Farm to Market Rd 1459"
-    src="https://maps-api-ssl.google.com/maps?hl=en&amp;ll=29.055989,-95.687797&amp;output=embed&amp;q=9303+Farm+to+Market+Rd+1459,+Sweeny,+TX+77480,+USA+(9303+Farm+to+Market+Rd+1459)&amp;z=17"
-    allowfullscreen=""
-  ></iframe> -->
 </section>
+
+<CabinRates />
+
+<ContactForm formTitle="Knock on the Door!" formSubTitle="You’re always welcome at The Cabin, let’s schedule it." bgColor="FFF7F1" />
+
+<div class="h-16"></div>

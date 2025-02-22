@@ -49,11 +49,7 @@
 
     // attempt login
     try {
-      let userCredential = await signInWithEmailAndPassword(
-        $fb.auth,
-        formFields.email,
-        formFields.password,
-      );
+      let userCredential = await signInWithEmailAndPassword($fb.auth, formFields.email, formFields.password);
 
       if (userCredential.user) {
         $loginStore.loggingIn = true;
@@ -77,30 +73,12 @@
     return;
   }}
 >
-  <h1 class="scroll-m-20 text-xl font-semibold tracking-tight">
-    Account Login
-  </h1>
-  <p class="mb-4 text-sm text-muted-foreground">
-    Existing users can login with email and password.
-  </p>
+  <h1 class="scroll-m-20 text-xl font-semibold tracking-tight">Account Login</h1>
+  <p class="mb-4 text-sm text-muted-foreground">Existing users can login with email and password.</p>
   <Label for="email">Email</Label>
-  <Input
-    id="email"
-    type="email"
-    name="email"
-    placeholder="email@domain.com"
-    autocomplete="email"
-    class="mb-1"
-    disabled={isLoading}
-  />
+  <Input id="email" type="email" name="email" placeholder="email@domain.com" autocomplete="email" class="mb-1 text-base" disabled={isLoading} />
   <Label for="password">Password</Label>
-  <Input
-    id="password"
-    type="password"
-    autocomplete="password"
-    name="password"
-    disabled={isLoading}
-  />
+  <Input id="password" type="password" autocomplete="password" name="password" disabled={isLoading} class=" text-base" />
   <Button type="submit" disabled={isLoading} class="my-4">
     {#if isLoading}
       <ButtonSpinner></ButtonSpinner>
