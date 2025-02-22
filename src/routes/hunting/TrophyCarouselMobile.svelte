@@ -18,10 +18,11 @@
   bind:api={carouselInstance}
   opts={{
     loop: true,
+    dragFree: true,
   }}
   plugins={[
     Autoplay({
-      delay: 3000,
+      delay: 5000,
     }),
   ]}
   class="w-full  absolute bottom-10 left-0 px-6

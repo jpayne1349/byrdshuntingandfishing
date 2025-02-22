@@ -23,10 +23,18 @@
     let item_number = carousel_item_clicked.dataset.count;
 
     carouselInstance.scrollTo(parseInt(item_number as string) - 1);
+
+    //halt autoplay after selecting
+    carouselInstance.plugins().autoplay.stop();
   }
 
   $: if (carouselInstance) {
     carouselInstance.scrollTo(parseInt(set_carousel as string) - 1);
+  }
+
+  $: if (set_carousel != "0") {
+    //halt autoplay after selecting
+    carouselInstance.plugins().autoplay.stop();
   }
 
   $: if (carouselInstance) {
@@ -34,6 +42,7 @@
     carouselInstance.on("select", () => {
       current = carouselInstance.selectedScrollSnap() + 1;
     });
+
     dispatch("carousel_current", { value: current });
   }
 </script>
@@ -75,7 +84,7 @@
         data-count={photoObject.index}
       >
         <div
-          class="m-2 w-36 h-36 relative aspect-square bg-center bg-cover bg-no-repeat rounded-lg
+          class="m-4 w-36 h-36 relative aspect-square bg-center bg-cover bg-no-repeat rounded-lg
                 2xl:w-48 2xl:h-48"
           style="background-image:url({photoObject.url});"
           data-count={photoObject.index}
@@ -95,7 +104,7 @@
   }}
   plugins={[
     Autoplay({
-      delay: 3000,
+      delay: 5000,
       stopOnInteraction: true,
     }),
   ]}
